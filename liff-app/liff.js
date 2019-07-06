@@ -276,7 +276,7 @@ function liffGetImageDevice(state) {
     // uint8_array[0]: camera shutter flag
     // uint8_array[1]: servo1 angle (angle is 255 = false)
     window.outCharacteristic.writeValue(
-        new Uint8Array([0x01, 0x5a])
+        new Uint8Array([0x01, 0xff])
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
@@ -286,7 +286,7 @@ function liffChangeDeviceServo(angle) {
     // uint8_array[0]: camera shutter flag
     // uint8_array[1]: servo1 angle
     window.outCharacteristic.writeValue(
-        new Uint8Array([0, angle])
+        new Uint8Array([0x00, angle])
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
