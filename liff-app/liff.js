@@ -42,6 +42,7 @@ function handlerGetImage() {
 }
 
 function handlerServo01() {
+    rangeValue(servo01, servo01_view);
     liffChangeDeviceServo01(servo01);
 }
 
