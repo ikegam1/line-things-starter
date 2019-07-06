@@ -67,7 +67,8 @@ function uiCountPressButton() {
     clickCount++;
 
     const el = document.getElementById("click-count");
-    el.innerText = clickCount;
+    //el.innerText = clickCount;
+    el.innerText = servo01.value;
 }
 
 function uiToggleStateButton(pressed) {
@@ -289,5 +290,7 @@ function liffChangeDeviceServo(angle) {
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
+    const el = document.getElementById("click-count");
+    el.innerText = "sended:" + angle;
 }
 
