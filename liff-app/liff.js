@@ -279,7 +279,7 @@ function liffGetImageDevice(state) {
     // uint8_array[1]: servo1 angle (angle is 255 = false)
     let text = "1Z";
     let ch_array = text.split("");
-    for(let i = 0; i < 16; i = i + 1){
+    for(let i = 0; i < 2; i = i + 1){
       ch_array[i] = (new TextEncoder('ascii')).encode(ch_array[i]);
     }
     window.outCharacteristic.writeValue(
@@ -292,8 +292,13 @@ function liffGetImageDevice(state) {
 function liffChangeDeviceServo(angle) {
     // uint8_array[0]: camera shutter flag
     // uint8_array[1]: servo1 angle
+    let text = "09";
+    let ch_array = text.split("");
+    for(let i = 0; i < 2; i = i + 1){
+      ch_array[i] = (new TextEncoder('ascii')).encode(ch_array[i]);
+    }
     window.outCharacteristic.writeValue(
-        new Uint8Array([0x00, angle])
+        new Uint8Array(ch_array)
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
