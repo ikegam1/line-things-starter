@@ -1,5 +1,6 @@
 # LINE Things Starter
 
+deployed 2019/07/06
 These are the sample codes for LINE Things Developer Trial.
 
 LINE Things compatible device example firmware and LIFF application code are included.
