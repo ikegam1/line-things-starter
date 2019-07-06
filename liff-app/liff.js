@@ -42,8 +42,10 @@ function handlerGetImage() {
 }
 
 function handlerServo01() {
-    servo01_view.innerText = servo01.value;
-    liffChangeDeviceServo01(servo01.value);
+    liffChangeDeviceServo01(90);
+    servo01_view.innerText = 90;
+    //liffChangeDeviceServo01(servo01.value);
+    //servo01_view.innerText = servo01.value;
 }
 
 // ------------ //
@@ -276,7 +278,7 @@ function liffGetImageDevice(state) {
     // uint8_array[0]: camera shutter flag
     // uint8_array[1]: servo1 angle (angle is 255 = false)
     window.outCharacteristic.writeValue(
-        new Uint8Array([0x01, 0xff])
+        new Uint8Array([0x01, 0xff, 0x02, 0x03, 0x04, 0x0a, 0xaa, 0x99, (new TextEncoder('ascii')).encode(z)])
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
