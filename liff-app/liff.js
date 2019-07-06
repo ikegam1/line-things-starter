@@ -37,8 +37,8 @@ servo01.addEventListener('click', rangeValue(servo01, servo01_view));
 // Handler functions //
 // ----------------- //
 
-function handlerGetImage() {
-    liffGetImageDevice(1);
+function handlerGetImage(v) {
+    liffGetImageDevice(v);
 }
 
 function handlerServo01() {
@@ -274,10 +274,10 @@ function liffGetButtonStateCharacteristic(characteristic) {
     });
 }
 
-function liffGetImageDevice(state) {
+function liffGetImageDevice(v) {
     // uint8_array[0]: camera shutter flag
     // uint8_array[1]: servo1 angle (angle is 255 = false)
-    let text = "1Z";
+    let text = "1" + v;
     let ch_array = text.split("");
     for(let i = 0; i < 2; i = i + 1){
       ch_array[i] = (new TextEncoder('ascii')).encode(ch_array[i]);
