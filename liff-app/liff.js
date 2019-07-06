@@ -2,7 +2,7 @@
 const USER_SERVICE_UUID         = 'BEB28C9E-A574-456A-B861-7B134C42F667';
 // User service characteristics
 const BTN_CHARACTERISTIC_UUID   = '62FBD229-6EDD-4D1A-B554-5C4E1BB29169';
-const INPUT_CHARACTERISTIC_UUID   = 'E9062E71-9E62-4BC6-B0D3-35CDCD9B027B';
+const WRITE_CHARACTERISTIC_UUID   = 'E9062E71-9E62-4BC6-B0D3-35CDCD9B027B';
 
 // PSDI Service UUID: Fixed value for Developer Trial
 const PSDI_SERVICE_UUID         = 'E625601E-9E55-4597-A598-76018A0D293D';
@@ -230,11 +230,8 @@ function liffGetUserService(service) {
     });
 
     // OUTPUT_VALUE
-    service.getCharacteristic(INPUT_CHARACTERISTIC_UUID).then(characteristic => {
+    service.getCharacteristic(WRITE_CHARACTERISTIC_UUID).then(characteristic => {
         window.outCharacteristic = characteristic;
-
-        // Switch off by default
-        //liffToggleDeviceLedState(false);
     }).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
@@ -278,7 +275,7 @@ function liffGetImageDevice(state) {
     // uint8_array[0]: camera shutter flag
     // uint8_array[1]: servo1 angle (angle is 255 = false)
     window.outCharacteristic.writeValue(
-        new Uint8Array([0x01, 0xff])
+        new Uint8Array([0, 255])
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
@@ -288,7 +285,7 @@ function liffChangeDeviceServo(angle) {
     // uint8_array[0]: camera shutter flag
     // uint8_array[1]: servo1 angle
     window.outCharacteristic.writeValue(
-        new Uint8Array([0x00, "0x"+angle.toString(16)])
+        new Uint8Array([0, angle])
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
