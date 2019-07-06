@@ -29,7 +29,7 @@ var rangeValue = function (servo01, servo01_view) {
     servo01_view.innerHTML = servo01.value;
   }
 }
-servo01.addEventListener('input', rangeValue(servo01, servo01_view));
+servo01.addEventListener('click', rangeValue(servo01, servo01_view));
 
 
 
