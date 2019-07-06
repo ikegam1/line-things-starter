@@ -277,8 +277,13 @@ function liffGetButtonStateCharacteristic(characteristic) {
 function liffGetImageDevice(state) {
     // uint8_array[0]: camera shutter flag
     // uint8_array[1]: servo1 angle (angle is 255 = false)
+    let text = "0123456789";
+    let ch_array = text.split("");
+    for(let i = 0; i < 16; i = i + 1){
+      ch_array[i] = (new TextEncoder('ascii')).encode(ch_array[i]);
+    }
     window.outCharacteristic.writeValue(
-        new Int8Array([0x01, 0xff, 0x02, 0x03, 0x04, 0x0a, 0xaa, 0x99])
+        new Uint8Array(ch_array)
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
