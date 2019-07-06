@@ -278,7 +278,7 @@ function liffGetImageDevice(state) {
     // uint8_array[0]: camera shutter flag
     // uint8_array[1]: servo1 angle (angle is 255 = false)
     window.outCharacteristic.writeValue(
-        new Uint8Array([0x01, 0xff, 0x02, 0x03, 0x04, 0x0a, 0xaa, 0x99, (new TextEncoder('ascii')).encode(z)])
+        new Uint8Array([0x01, 0xff, 0x02, 0x03, 0x04, 0x0a, 0xaa, 0x99])
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
