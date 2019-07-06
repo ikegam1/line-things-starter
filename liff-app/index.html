@@ -44,9 +44,14 @@
         </tr>
       </table>
       <hr />
-      <!-- Toggle LED -->
+      <!-- Camera Shutter -->
       <p>
-        <button id="btn-led-toggle" class="btn btn-led-toggle" onclick="handlerToggleLed()">Switch LED ON</button>
+        <button id="btn-led-toggle" class="btn btn-led-toggle" onclick="handlerGetImage()">Get Image</button>
+      </p>
+      <!-- Servo1 move -->
+      <p>
+        <input id="input-servo01" type="range" value="1" min="0" max="180" step="10" onchange="handlerServo01()" oninput="document.getElementById('output1').value=this.value">
+        <output id="input-servo01-view">1</output>
       </p>
       <hr />
     </div>

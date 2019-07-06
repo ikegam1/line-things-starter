@@ -1,15 +1,14 @@
 // User service UUID: Change this to your generated service UUID
 const USER_SERVICE_UUID         = '91E4E176-D0B9-464D-9FE4-52EE3E9F1552'; // LED, Button
 // User service characteristics
-const LED_CHARACTERISTIC_UUID   = 'E9062E71-9E62-4BC6-B0D3-35CDCD9B027B';
 const BTN_CHARACTERISTIC_UUID   = '62FBD229-6EDD-4D1A-B554-5C4E1BB29169';
+const INPUT_CHARACTERISTIC_UUID   = 'E9062E71-9E62-4BC6-B0D3-35CDCD9B027B';
 
 // PSDI Service UUID: Fixed value for Developer Trial
 const PSDI_SERVICE_UUID         = 'E625601E-9E55-4597-A598-76018A0D293D'; // Device ID
 const PSDI_CHARACTERISTIC_UUID  = '26E2B12B-85F0-4F3F-9FDD-91D114270E6E';
 
 // UI settings
-let ledState = false; // true: LED on, false: LED off
 let clickCount = 0;
 
 // -------------- //
@@ -20,21 +19,37 @@ window.onload = () => {
     initializeApp();
 };
 
+// -------------- //
+// On change lisner //
+// -------------- //
+var servo01 = document.getElementById('input-servo01');
+var servo01_view = document.getElementById('input-servo01-view');
+var rangeValue = function (servo01, servo01_view) {
+  return function(evt){
+    servo01_view.innerHTML = servo01.value;
+  }
+}
+servo01.addEventListener('input', rangeValue(servo01, servo01_view));
+
+
+
 // ----------------- //
 // Handler functions //
 // ----------------- //
 
-function handlerToggleLed() {
-    ledState = !ledState;
+function handlerGetImage() {
+    liffGetImageDevice(1);
+}
 
-    uiToggleLedButton(ledState);
-    liffToggleDeviceLedState(ledState);
+function handlerServo01() {
+    liffChangeDeviceServo01(servo01);
 }
 
 // ------------ //
 // UI functions //
 // ------------ //
 
+/*
 function uiToggleLedButton(state) {
     const el = document.getElementById("btn-led-toggle");
     el.innerText = state ? "Switch LED OFF" : "Switch LED ON";
@@ -45,6 +60,7 @@ function uiToggleLedButton(state) {
       el.classList.remove("led-on");
     }
 }
+*/
 
 function uiCountPressButton() {
     clickCount++;
@@ -191,10 +207,7 @@ function liffConnectToDevice(device) {
             // Remove disconnect callback
             device.removeEventListener('gattserverdisconnected', disconnectCallback);
 
-            // Reset LED state
-            ledState = false;
             // Reset UI elements
-            uiToggleLedButton(false);
             uiToggleStateButton(false);
 
             // Try to reconnect
@@ -215,9 +228,9 @@ function liffGetUserService(service) {
         uiStatusError(makeErrorMsg(error), false);
     });
 
-    // Toggle LED
-    service.getCharacteristic(LED_CHARACTERISTIC_UUID).then(characteristic => {
-        window.ledCharacteristic = characteristic;
+    // OUTPUT_VALUE
+    service.getCharacteristic(INPUT_CHARACTERISTIC_UUID).then(characteristic => {
+        window.outCharacteristic = characteristic;
 
         // Switch off by default
         liffToggleDeviceLedState(false);
@@ -260,12 +273,26 @@ function liffGetButtonStateCharacteristic(characteristic) {
     });
 }
 
-function liffToggleDeviceLedState(state) {
-    // on: 0x01
-    // off: 0x00
-    window.ledCharacteristic.writeValue(
-        state ? new Uint8Array([0x01]) : new Uint8Array([0x00])
+function liffGetImageDevice(state) {
+    // uint8_array[0]: camera shutter flag
+    // uint8_array[1]: servo1 angle (angle is 255 = false)
+    window.outCharacteristic.writeValue(
+        new Uint8Array([0x01, 0x255]);
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
 }
+
+function liffChangeDeviceServo(angle) {
+    // uint8_array[0]: camera shutter flag
+    // uint8_array[1]: servo1 angle
+    window.outCharacteristic.writeValue(
+        new Uint8Array([0x00, "0x"+angle.toString(16)]);
+    ).catch(error => {
+        uiStatusError(makeErrorMsg(error), false);
+    });
+}
+
+
+
+
