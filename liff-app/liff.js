@@ -233,7 +233,7 @@ function liffGetUserService(service) {
         window.outCharacteristic = characteristic;
 
         // Switch off by default
-        liffToggleDeviceLedState(false);
+        //liffToggleDeviceLedState(false);
     }).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
