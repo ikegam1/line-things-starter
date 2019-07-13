@@ -301,16 +301,13 @@ function liffChangeDeviceServo(angle, way = VERTICAL) {
     // uint8_array[0]: camera shutter flag
     // uint8_array[1]: servo1 angle (angle is 0 = false)
     // uint8_array[2]: servo2 angle (angle is 0 = false)
-    let ch_array = ["0"];
+    let ch_array = [(new TextEncoder('ascii')).encode("0")];
     if(way == VERTICAL){
-        ch_array[1] = [""+angle];
-        ch_array[2] = ["0"];
+        ch_array[1] = [(new TextEncoder('ascii')).encode(angle)];
+        ch_array[2] = [(new TextEncoder('ascii')).encode("0")];
     }else{
-        ch_array[1] = ["0"];
-        ch_array[2] = [""+angle];
-    }
-    for(let i = 0; i < 3; i = i + 1){
-      ch_array[i] = (new TextEncoder('ascii')).encode(ch_array[i]);
+        ch_array[1] = [(new TextEncoder('ascii')).encode("0")];
+        ch_array[2] = [(new TextEncoder('ascii')).encode(angle)];
     }
     window.outCharacteristic.writeValue(
         new Uint8Array(ch_array)
