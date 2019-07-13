@@ -38,20 +38,19 @@ function handlerGetImage(v) {
 }
 
 function handlerServo01(i) {
-    if(i <= 1 && i >= 9){
+    angleV = angleV += i;
+    if(angleV <= 1 && angleV >= 9){
       return false;
     }
 
-    angleV = angleV += i;
     liffChangeDeviceServo(angleV, VERTICAL);
 }
 
 function handlerServo02(i) {
-    if(i <= 1 && i >= 9){
+    angleS = angleS += i;
+    if(angleS <= 1 && angleS >= 9){
       return false;
     }
-
-    angleS = angleS += i;
     liffChangeDeviceServo(angleS, SIDE);
 }
 
