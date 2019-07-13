@@ -8,8 +8,13 @@ const WRITE_CHARACTERISTIC_UUID   = 'E9062E71-9E62-4BC6-B0D3-35CDCD9B027B';
 const PSDI_SERVICE_UUID         = 'E625601E-9E55-4597-A598-76018A0D293D';
 const PSDI_CHARACTERISTIC_UUID  = '26E2B12B-85F0-4F3F-9FDD-91D114270E6E';
 
+const VERTICAL = 1;
+const SIDE = 2;
+
 // UI settings
 let clickCount = 0;
+let angleV = 0;
+let angleS = 0;
 
 // -------------- //
 // On window load //
@@ -22,15 +27,6 @@ window.onload = () => {
 // -------------- //
 // On change lisner //
 // -------------- //
-var servo01 = document.getElementById('input-servo01');
-var servo01_view = document.getElementById('input-servo01-view');
-var rangeValue = function (servo01, servo01_view) {
-  return function(evt){
-    servo01_view.innerHTML = servo01.value;
-  }
-}
-servo01.addEventListener('click', rangeValue(servo01, servo01_view));
-
 
 
 // ----------------- //
@@ -41,12 +37,24 @@ function handlerGetImage(v) {
     liffGetImageDevice(v);
 }
 
-function handlerServo01() {
-    liffChangeDeviceServo01(90);
-    servo01_view.innerText = 90;
-    //liffChangeDeviceServo01(servo01.value);
-    //servo01_view.innerText = servo01.value;
+function handlerServo01(i) {
+    if(i <= 1 && i >= 9){
+      return false;
+    }
+
+    angleV = angleV += i;
+    liffChangeDeviceServo(angleV, VERTICAL);
 }
+
+function handlerServo02(i) {
+    if(i <= 1 && i >= 9){
+      return false;
+    }
+
+    angleS = angleS += i;
+    liffChangeDeviceServo(angleS, SIDE);
+}
+
 
 // ------------ //
 // UI functions //
@@ -276,10 +284,11 @@ function liffGetButtonStateCharacteristic(characteristic) {
 
 function liffGetImageDevice(v) {
     // uint8_array[0]: camera shutter flag
-    // uint8_array[1]: servo1 angle (angle is 255 = false)
-    let text = "1" + v;
+    // uint8_array[1]: servo1 angle (angle is 0 = false)
+    // uint8_array[2]: servo2 angle (angle is 0 = false)
+    let text = "100";
     let ch_array = text.split("");
-    for(let i = 0; i < 2; i = i + 1){
+    for(let i = 0; i < 3; i = i + 1){
       ch_array[i] = (new TextEncoder('ascii')).encode(ch_array[i]);
     }
     window.outCharacteristic.writeValue(
@@ -289,12 +298,19 @@ function liffGetImageDevice(v) {
     });
 }
 
-function liffChangeDeviceServo(angle) {
+function liffChangeDeviceServo(angle, way = VERTICAL) {
     // uint8_array[0]: camera shutter flag
-    // uint8_array[1]: servo1 angle
-    let text = "09";
-    let ch_array = text.split("");
-    for(let i = 0; i < 2; i = i + 1){
+    // uint8_array[1]: servo1 angle (angle is 0 = false)
+    // uint8_array[2]: servo2 angle (angle is 0 = false)
+    let ch_array = ["0"];
+    if(way == VERTICAL){
+        ch_array[1] = [""+angle];
+        ch_array[2] = ["0"];
+    }else{
+        ch_array[1] = ["0"];
+        ch_array[2] = [""+angle];
+    }
+    for(let i = 0; i < 3; i = i + 1){
       ch_array[i] = (new TextEncoder('ascii')).encode(ch_array[i]);
     }
     window.outCharacteristic.writeValue(
@@ -302,7 +318,7 @@ function liffChangeDeviceServo(angle) {
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
-    const el = document.getElementById("click-count");
-    el.innerText = "sended:" + angle;
+    const el = document.getElementById("anglev");
+    el.innerText = angleV;
 }
 
