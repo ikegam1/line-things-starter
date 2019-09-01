@@ -25,13 +25,12 @@ let el_hand = document.getElementById('hand');
 
 window.onload = () => {
     initializeApp();
-    addEventListeners();
 };
 
 // -------------- //
 // On change lisner //
 // -------------- //
-function addEventListeners(){
+document.addEventListener("DOMContentLoaded", function(){
   el_arrow.addEventListener('touchstart', function(event) {
     console.log('touchstart');
     handlerAllowToggle(1);
@@ -44,7 +43,7 @@ function addEventListeners(){
     console.log('touchend');
     handlerCatch(1);
   }, false);
-}
+}, false);
 
 // ----------------- //
 // Handler functions //
