@@ -16,8 +16,6 @@ const CATCH = 3;
 let clickCount = 0;
 let angleV = 0;
 let angleS = 0;
-let el_arrow = document.getElementById('arrow');
-let el_hand = document.getElementById('hand');
 
 // -------------- //
 // On window load //
@@ -31,6 +29,8 @@ window.onload = () => {
 // On change lisner //
 // -------------- //
 document.addEventListener("DOMContentLoaded", function(){
+  let el_arrow = document.getElementById('arrow');
+  let el_hand = document.getElementById('hand');
   el_arrow.addEventListener('touchstart', function(event) {
     console.log('touchstart');
     handlerAllowToggle(1);
