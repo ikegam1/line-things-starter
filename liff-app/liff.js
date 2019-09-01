@@ -95,6 +95,7 @@ function uiStatusError(message, showLoadingAnimation) {
 }
 
 function makeErrorMsg(errorObj) {
+    console.log(errorObj);
     return "Error\n" + errorObj.code + "\n" + errorObj.message;
 }
 
