@@ -65,6 +65,33 @@ function handlerCatch(i) {
 // ------------ //
 // UI functions //
 // ------------ //
+function uiToggleDeviceConnected(connected) {
+    const elStatus = document.getElementById("status");
+    const elControls = document.getElementById("controls");
+
+    elStatus.classList.remove("error");
+
+    if (connected) {
+        // Hide loading animation
+        uiToggleLoadingAnimation(false);
+        // Show status connected
+        elStatus.classList.remove("inactive");
+        elStatus.classList.add("success");
+        elStatus.innerText = "Device connected";
+        // Show controls
+        elControls.classList.remove("hidden");
+    } else {
+        // Show loading animation
+        uiToggleLoadingAnimation(true);
+        // Show status disconnected
+        elStatus.classList.remove("success");
+        elStatus.classList.add("inactive");
+        elStatus.innerText = "Device disconnected";
+        // Hide controls
+        elControls.classList.add("hidden");
+    }
+}
+
 
 function uiToggleLoadingAnimation(isLoading) {
     const elLoading = document.getElementById("loading-animation");
