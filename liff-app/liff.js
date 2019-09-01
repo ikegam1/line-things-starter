@@ -8,13 +8,16 @@ const WRITE_CHARACTERISTIC_UUID   = 'E9062E71-9E62-4BC6-B0D3-35CDCD9B027B';
 const PSDI_SERVICE_UUID         = 'E625601E-9E55-4597-A598-76018A0D293D';
 const PSDI_CHARACTERISTIC_UUID  = '26E2B12B-85F0-4F3F-9FDD-91D114270E6E';
 
-const VERTICAL = 1;
-const SIDE = 2;
+const ARROW = 1;
+const ROTATE = 2;
+const CATCH = 3;
 
 // UI settings
 let clickCount = 0;
 let angleV = 0;
 let angleS = 0;
+let el_arrow = document.getElementById('arrow');
+let el_hand = document.getElementById('hand');
 
 // -------------- //
 // On window load //
@@ -27,97 +30,39 @@ window.onload = () => {
 // -------------- //
 // On change lisner //
 // -------------- //
-
+el_arrow.addEventListener('touchstart', function(event) {
+  console.log('touchstart');
+  handlerAllowToggle(1);
+}, false);
+el_arrow.addEventListener('touchend', function(event) {
+  console.log('touchend');
+  handlerAllowToggle(0);
+}, false);
+el_hand.addEventListener('touchend', function(event) {
+  console.log('touchend');
+  handlerCatch(1);
+}, false);
 
 // ----------------- //
 // Handler functions //
 // ----------------- //
 
-function handlerGetImage(v) {
-    liffGetImageDevice(v);
+function handlerArrowToggle(i) {
+    liffSentSerial(i, ARROW);
 }
 
-function handlerServo01(i) {
-    angleV = angleV += i;
-    if(angleV <= 1 && angleV >= 9){
-      return false;
-    }
-
-    liffChangeDeviceServo(angleV, VERTICAL);
+function handlerRotate(i) {
+    liffSentSerial(i, ROTATE);
 }
 
-function handlerServo02(i) {
-    angleS = angleS += i;
-    if(angleS <= 1 && angleS >= 9){
-      return false;
-    }
-    liffChangeDeviceServo(angleS, SIDE);
+function handlerCatch(i) {
+    liffSentSerial(i, CATCH);
 }
 
 
 // ------------ //
 // UI functions //
 // ------------ //
-
-/*
-function uiToggleLedButton(state) {
-    const el = document.getElementById("btn-led-toggle");
-    el.innerText = state ? "Switch LED OFF" : "Switch LED ON";
-
-    if (state) {
-      el.classList.add("led-on");
-    } else {
-      el.classList.remove("led-on");
-    }
-}
-*/
-
-function uiCountPressButton() {
-    clickCount++;
-
-    const el = document.getElementById("click-count");
-    //el.innerText = clickCount;
-    el.innerText = servo01.value;
-}
-
-function uiToggleStateButton(pressed) {
-    const el = document.getElementById("btn-state");
-
-    if (pressed) {
-        el.classList.add("pressed");
-        el.innerText = "Pressed";
-    } else {
-        el.classList.remove("pressed");
-        el.innerText = "Released";
-    }
-}
-
-function uiToggleDeviceConnected(connected) {
-    const elStatus = document.getElementById("status");
-    const elControls = document.getElementById("controls");
-
-    elStatus.classList.remove("error");
-
-    if (connected) {
-        // Hide loading animation
-        uiToggleLoadingAnimation(false);
-        // Show status connected
-        elStatus.classList.remove("inactive");
-        elStatus.classList.add("success");
-        elStatus.innerText = "Device connected";
-        // Show controls
-        elControls.classList.remove("hidden");
-    } else {
-        // Show loading animation
-        uiToggleLoadingAnimation(true);
-        // Show status disconnected
-        elStatus.classList.remove("success");
-        elStatus.classList.add("inactive");
-        elStatus.innerText = "Device disconnected";
-        // Hide controls
-        elControls.classList.add("hidden");
-    }
-}
 
 function uiToggleLoadingAnimation(isLoading) {
     const elLoading = document.getElementById("loading-animation");
@@ -281,40 +226,28 @@ function liffGetButtonStateCharacteristic(characteristic) {
     });
 }
 
-function liffGetImageDevice(v) {
-    // uint8_array[0]: camera shutter flag
-    // uint8_array[1]: servo1 angle (angle is 0 = false)
-    // uint8_array[2]: servo2 angle (angle is 0 = false)
-    let text = "100";
-    let ch_array = text.split("");
-    for(let i = 0; i < 3; i = i + 1){
-      ch_array[i] = (new TextEncoder('ascii')).encode(ch_array[i]);
-    }
-    window.outCharacteristic.writeValue(
-        new Uint8Array(ch_array)
-    ).catch(error => {
-        uiStatusError(makeErrorMsg(error), false);
-    });
-}
-
-function liffChangeDeviceServo(angle, way = VERTICAL) {
-    // uint8_array[0]: camera shutter flag
-    // uint8_array[1]: servo1 angle (angle is 0 = false)
-    // uint8_array[2]: servo2 angle (angle is 0 = false)
+function liffSentSerial(toggle, mode = ARROW) {
+    // uint8_array[0]: ARROW
+    // uint8_array[1]: CATCH
+    // uint8_array[2]: ROTATE
     let ch_array = [(new TextEncoder('ascii')).encode("0")];
-    if(way == VERTICAL){
-        ch_array[1] = [(new TextEncoder('ascii')).encode(angle)];
+    if(mode == ARROW){
+        ch_array[0] = [(new TextEncoder('ascii')).encode(toggle)];
+        ch_array[1] = [(new TextEncoder('ascii')).encode("0")];
+        ch_array[2] = [(new TextEncoder('ascii')).encode("0")];
+    }else if(mode == CATCH){
+        ch_array[0] = [(new TextEncoder('ascii')).encode("0")];
+        ch_array[1] = [(new TextEncoder('ascii')).encode(toggle)];
         ch_array[2] = [(new TextEncoder('ascii')).encode("0")];
     }else{
+        ch_array[0] = [(new TextEncoder('ascii')).encode("0")];
         ch_array[1] = [(new TextEncoder('ascii')).encode("0")];
-        ch_array[2] = [(new TextEncoder('ascii')).encode(angle)];
+        ch_array[2] = [(new TextEncoder('ascii')).encode(toggle)];
     }
     window.outCharacteristic.writeValue(
         new Uint8Array(ch_array)
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
-    const el = document.getElementById("anglev");
-    el.innerText = angleV;
 }
 
