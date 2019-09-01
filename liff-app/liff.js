@@ -33,14 +33,17 @@ document.addEventListener("DOMContentLoaded", function(){
   let el_hand = document.getElementById('hand');
   el_arrow.addEventListener('touchstart', function(event) {
     console.log('touchstart');
-    handlerAllowToggle(1);
+    alert('touchstart');
+    handlerArrowToggle(1);
   }, false);
   el_arrow.addEventListener('touchend', function(event) {
     console.log('touchend');
-    handlerAllowToggle(0);
+    alert('touchend');
+    handlerArrowToggle(0);
   }, false);
   el_hand.addEventListener('touchend', function(event) {
     console.log('touchend');
+    alert('touchstart cache');
     handlerCatch(1);
   }, false);
 }, false);
