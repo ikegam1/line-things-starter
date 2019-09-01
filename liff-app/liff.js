@@ -25,23 +25,26 @@ let el_hand = document.getElementById('hand');
 
 window.onload = () => {
     initializeApp();
+    addEventListeners();
 };
 
 // -------------- //
 // On change lisner //
 // -------------- //
-el_arrow.addEventListener('touchstart', function(event) {
-  console.log('touchstart');
-  handlerAllowToggle(1);
-}, false);
-el_arrow.addEventListener('touchend', function(event) {
-  console.log('touchend');
-  handlerAllowToggle(0);
-}, false);
-el_hand.addEventListener('touchend', function(event) {
-  console.log('touchend');
-  handlerCatch(1);
-}, false);
+function addEventListeners(){
+  el_arrow.addEventListener('touchstart', function(event) {
+    console.log('touchstart');
+    handlerAllowToggle(1);
+  }, false);
+  el_arrow.addEventListener('touchend', function(event) {
+    console.log('touchend');
+    handlerAllowToggle(0);
+  }, false);
+  el_hand.addEventListener('touchend', function(event) {
+    console.log('touchend');
+    handlerCatch(1);
+  }, false);
+}
 
 // ----------------- //
 // Handler functions //
