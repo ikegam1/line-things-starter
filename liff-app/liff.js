@@ -35,22 +35,25 @@ window.onload = () => {
 // -------------- //
 document.addEventListener("DOMContentLoaded", function(){
   let el_arrow = document.getElementById('arrow');
+  let el_stop = document.getElementById('stop');
+  let el_rotate = document.getElementById('rotate');
   let el_hand = document.getElementById('hand');
   el_arrow.addEventListener('touchstart', function(event) {
     console.log('touchstart');
     audioElem.play();
     handlerArrowToggle(1);
-    touchtimer = setTimeout(arrowTouchEnd, 10000); //10sec
+    touchtimer = setTimeout(arrow_touch_end, 10000); //10sec
   }, false);
-  el_arrow.addEventListener('touchend', function(event) {
-    arrowTouchEnd();
+  el_stop.addEventListener('touchstart', function(event) {
+    arrow_touch_end();
   }, false);
-  el_hand.addEventListener('touchend', function(event) {
-    console.log('touchend');
-    alert('touchstart cache');
+  el_rotate.addEventListener('touchstart', function(event) {
     handlerCatch(1);
   }, false);
-  function arrowTouchEnd(){
+  el_hand.addEventListener('touchstart', function(event) {
+    handlerCatch(1);
+  }, false);
+  function arrow_touch_end(){
     clearTimeout(touchtimer);
     audioElem.pause();
     alert('touchend');
