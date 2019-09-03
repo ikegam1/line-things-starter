@@ -38,10 +38,16 @@ document.addEventListener("DOMContentLoaded", function(){
   let el_stop = document.getElementById('stop');
   let el_rotate = document.getElementById('rotate');
   let el_hand = document.getElementById('hand');
+  el_stop.classList.add('disabled');
+  el_rotate.classList.add('disabled');
+  el_hand.classList.add('disabled');
+
   el_arrow.addEventListener('touchstart', function(event) {
     console.log('touchstart');
     audioElem.play();
     handlerArrowToggle(1);
+    el_stop.classList.remove('disabled');
+    el_arrow.classList.add('disabled');
     touchtimer = setTimeout(arrow_touch_end, 10000); //10sec
   }, false);
   el_stop.addEventListener('touchstart', function(event) {
@@ -49,15 +55,24 @@ document.addEventListener("DOMContentLoaded", function(){
   }, false);
   el_rotate.addEventListener('touchstart', function(event) {
     handlerCatch(1);
+    el_hand.classList.remove('disabled');
+    el_rotate.classList.add('disabled');
   }, false);
   el_hand.addEventListener('touchstart', function(event) {
     handlerCatch(1);
+    el_hand.classList.add('disabled');
+    touchtimer = setTimeout(arrow_touch_end, 10000); //10sec
   }, false);
   function arrow_touch_end(){
     clearTimeout(touchtimer);
     audioElem.pause();
     alert('touchend');
     handlerArrowToggle(0);
+    el_rotate.classList.remove('disabled');
+    el_stop.classList.add('disabled');
+  }
+  function restart(){
+    el_arrow.classList.remove('disabled');
   }
 }, false);
 
