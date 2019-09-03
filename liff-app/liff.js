@@ -38,7 +38,6 @@ document.addEventListener("DOMContentLoaded", function(){
   let el_hand = document.getElementById('hand');
   el_arrow.addEventListener('touchstart', function(event) {
     console.log('touchstart');
-    alert('touchstart');
     audioElem.play();
     handlerArrowToggle(1);
     touchtimer = setTimeout(arrowTouchEnd, 10000); //10sec
