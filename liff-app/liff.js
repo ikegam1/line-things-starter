@@ -18,6 +18,7 @@ let clickCount = 0;
 let angleV = 0;
 let angleS = 0;
 let audioElem = new Audio();
+let touchtimer = -1;
 
 // -------------- //
 // On window load //
@@ -40,22 +41,21 @@ document.addEventListener("DOMContentLoaded", function(){
     alert('touchstart');
     audioElem.play();
     handlerArrowToggle(1);
+    touchtimer = setTimeout(arrowTouchEnd, 10000); //10sec
   }, false);
   el_arrow.addEventListener('touchend', function(event) {
-    console.log('touchend');
-    alert('touchend');
-    handlerArrowToggle(0);
-  }, false);
-  el_arrow.addEventListener('click', function(event) {
-    console.log('click');
-    alert('touchend');
-    handlerArrowToggle(0);
+    arrowTouchEnd();
   }, false);
   el_hand.addEventListener('touchend', function(event) {
     console.log('touchend');
     alert('touchstart cache');
     handlerCatch(1);
   }, false);
+  function arrowTouchEnd(){
+    clearTimeout(touchtimer);
+    alert('touchend');
+    handlerArrowToggle(0);
+  }
 }, false);
 
 // ----------------- //
