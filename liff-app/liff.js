@@ -11,17 +11,21 @@ const PSDI_CHARACTERISTIC_UUID  = '26E2B12B-85F0-4F3F-9FDD-91D114270E6E';
 const ARROW = 1;
 const ROTATE = 2;
 const CATCH = 3;
+const MOVE_LEFT_MP3 = "mp3/bgm_maoudamashii_8bit29.mp3";
 
 // UI settings
 let clickCount = 0;
 let angleV = 0;
 let angleS = 0;
+let audioElem = new Audio();
 
 // -------------- //
 // On window load //
 // -------------- //
 
 window.onload = () => {
+    audioElem.src = MOVE_LEFT_MP3;
+    audioElem.load();
     initializeApp();
 };
 
@@ -34,10 +38,16 @@ document.addEventListener("DOMContentLoaded", function(){
   el_arrow.addEventListener('touchstart', function(event) {
     console.log('touchstart');
     alert('touchstart');
+    audioElem.play();
     handlerArrowToggle(1);
   }, false);
   el_arrow.addEventListener('touchend', function(event) {
     console.log('touchend');
+    alert('touchend');
+    handlerArrowToggle(0);
+  }, false);
+  el_arrow.addEventListener('click', function(event) {
+    console.log('click');
     alert('touchend');
     handlerArrowToggle(0);
   }, false);
@@ -68,6 +78,7 @@ function handlerCatch(i) {
 // ------------ //
 // UI functions //
 // ------------ //
+
 function uiToggleDeviceConnected(connected) {
     const elStatus = document.getElementById("status");
     const elControls = document.getElementById("controls");

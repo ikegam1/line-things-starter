@@ -14,40 +14,33 @@
   </head>
 
   <body>
-    <!-- Title -->
-    <h2>Things Party</h2>
-    <hr />
-    <p>
-      <img id="loading-animation" class="" src="loading.gif" height="14px" />
-      <span id="status" class="inactive">Device disconnected</span>
-    </p>
-    <hr />
-    <div id="controls" class="hidden">
-      <table class="device-info-table">
-        <tr>
-          <th>1</th>
-          <th>2</th>
-          <th>3</th>
-        </tr>
-        <tr>
-          <td class="device-info-cell device-info-val">>
-            <button id="arrow" class="btn btn-led-toggle" onclick="">
-              <i class="far fa-hand-point-right fa-5x"></i>
-            </button>
-          </td>
-          <td class="device-info-cell device-info-val">>
-            <button id="rotate" class="btn btn-led-toggle" onclick="">
-              <i class="far fa-hand-point-right fa-5x"></i>
-            </button>
-          </td>
-          <td class="device-info-cell device-info-val">>
-            <button id="hand" class="btn btn-led-toggle" onclick="">
-              <i class="far fa-hand-rock fa-5x"></i>
-            </button>
-          </td>
-        </tr>
-      </table>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <h2>Swings Party</h2>
+        <p>
+          <img id="loading-animation" class="" src="loading.gif" height="14px" />
+          <span id="status" class="inactive">Device disconnected</span>
+        </p>
+      </div>
     </div>
+    <div id="controls" class="row hidden">
+      <div class="col-4">
+        <button id="arrow" class="btn btn-info rounded-circle p-0" onclick="">
+          <i class="far fa-hand-point-right fa-5x"></i>
+        </button>
+      </div>
+      <div class="col-4">
+        <button id="rotate" class="btn btn-success rounded-circle p-0" onclick="">
+          <i class="far fa-hand-point-right fa-5x"></i>
+        </button>
+      </div>
+      <div class="col-4">
+        <button id="hand" class="btn btn-warning rounded-circle p-0" onclick="">
+          <i class="far fa-hand-rock fa-5x"></i>
+        </button>
+      </div>
+    </div>
+  </div>
   </body>
-
 </html>
