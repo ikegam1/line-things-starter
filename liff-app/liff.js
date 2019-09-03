@@ -53,6 +53,7 @@ document.addEventListener("DOMContentLoaded", function(){
   }, false);
   function arrowTouchEnd(){
     clearTimeout(touchtimer);
+    audioElem.pause();
     alert('touchend');
     handlerArrowToggle(0);
   }
