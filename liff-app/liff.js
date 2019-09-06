@@ -8,17 +8,21 @@ const WRITE_CHARACTERISTIC_UUID   = 'E9062E71-9E62-4BC6-B0D3-35CDCD9B027B';
 const PSDI_SERVICE_UUID         = 'E625601E-9E55-4597-A598-76018A0D293D';
 const PSDI_CHARACTERISTIC_UUID  = '26E2B12B-85F0-4F3F-9FDD-91D114270E6E';
 
+//action patern
 const ARROW = 1;
-const ROTATE = 2;
-const CATCH = 3;
+const STOP = 2;
+const ROTATE = 3;
+const CATCH = 7;
 const MOVE_LEFT_MP3 = "mp3/bgm_maoudamashii_8bit29.mp3";
+const ARM_DOWN_MP3 = "";
 
 // UI settings
 let clickCount = 0;
 let angleV = 0;
 let angleS = 0;
 let audioElem = new Audio();
-let touchtimer = -1;
+let timerArrow = -1;
+let timerRotate = -1;
 
 // -------------- //
 // On window load //
@@ -35,42 +39,47 @@ window.onload = () => {
 // -------------- //
 document.addEventListener("DOMContentLoaded", function(){
   let el_arrow = document.getElementById('arrow');
-  let el_stop = document.getElementById('stop');
   let el_rotate = document.getElementById('rotate');
-  let el_hand = document.getElementById('hand');
-  el_stop.classList.add('disabled');
   el_rotate.classList.add('disabled');
-  el_hand.classList.add('disabled');
 
   el_arrow.addEventListener('touchstart', function(event) {
     console.log('touchstart');
     audioElem.play();
-    handlerArrowToggle(1);
-    el_stop.classList.remove('disabled');
+    handlerToggle(ARROW);
+    el_rotate.classList.remove('disabled');
+    timerArrow = setTimeout(arrow_touch_end, 10000); //10sec
+  }, false);
+
+  el_arrow.addEventListener('touchend', function(event) {
     el_arrow.classList.add('disabled');
-    touchtimer = setTimeout(arrow_touch_end, 10000); //10sec
+    arrow_touch_end(){
   }, false);
-  el_stop.addEventListener('touchstart', function(event) {
-    arrow_touch_end();
-  }, false);
+
   el_rotate.addEventListener('touchstart', function(event) {
-    handlerCatch(1);
-    el_hand.classList.remove('disabled');
-    el_rotate.classList.add('disabled');
+    handlerToggle(ROTATE);
+    timerArrow = setTimeout(rotate_touch_end, 10000); //10sec
   }, false);
-  el_hand.addEventListener('touchstart', function(event) {
-    handlerCatch(1);
-    el_hand.classList.add('disabled');
-    touchtimer = setTimeout(arrow_touch_end, 10000); //10sec
+
+  el_rotate.addEventListener('touchend', function(event) {
+    timerRotate = setTimeout(rotate_touch_end, 20000); //20sec
   }, false);
+  
   function arrow_touch_end(){
-    clearTimeout(touchtimer);
+    clearTimeout(timerArrow);
     audioElem.pause();
     alert('touchend');
-    handlerArrowToggle(0);
+    handlerToggle(STOP);
     el_rotate.classList.remove('disabled');
     el_stop.classList.add('disabled');
   }
+  function rotate_touch_end(){
+    clearTimeout(timerRotate);
+    el_rotate.classList.add('disabled');
+    alert('touchend');
+    handlerToggle(CATCH);
+    timer = setTimeout(restart, 30000); //30sec
+  }
+ 
   function restart(){
     el_arrow.classList.remove('disabled');
   }
@@ -80,18 +89,9 @@ document.addEventListener("DOMContentLoaded", function(){
 // Handler functions //
 // ----------------- //
 
-function handlerArrowToggle(i) {
-    liffSentSerial(i, ARROW);
+function handlerToggle(i) {
+    liffSentSerial(i);
 }
-
-function handlerRotate(i) {
-    liffSentSerial(i, ROTATE);
-}
-
-function handlerCatch(i) {
-    liffSentSerial(i, CATCH);
-}
-
 
 // ------------ //
 // UI functions //
@@ -288,28 +288,12 @@ function liffGetButtonStateCharacteristic(characteristic) {
     });
 }
 
-function liffSentSerial(toggle, mode = ARROW) {
-    // uint8_array[0]: ARROW
-    // uint8_array[1]: CATCH
-    // uint8_array[2]: ROTATE
+function liffSentSerial(toggle) {
     let ch_array = [(new TextEncoder('ascii')).encode("0")];
-    if(mode == ARROW){
-        ch_array[0] = [(new TextEncoder('ascii')).encode(toggle)];
-        ch_array[1] = [(new TextEncoder('ascii')).encode("0")];
-        ch_array[2] = [(new TextEncoder('ascii')).encode("0")];
-    }else if(mode == CATCH){
-        ch_array[0] = [(new TextEncoder('ascii')).encode("0")];
-        ch_array[1] = [(new TextEncoder('ascii')).encode(toggle)];
-        ch_array[2] = [(new TextEncoder('ascii')).encode("0")];
-    }else{
-        ch_array[0] = [(new TextEncoder('ascii')).encode("0")];
-        ch_array[1] = [(new TextEncoder('ascii')).encode("0")];
-        ch_array[2] = [(new TextEncoder('ascii')).encode(toggle)];
-    }
+    ch_array[0] = [(new TextEncoder('ascii')).encode(toggle)];
     window.outCharacteristic.writeValue(
         new Uint8Array(ch_array)
     ).catch(error => {
         uiStatusError(makeErrorMsg(error), false);
     });
 }
-
