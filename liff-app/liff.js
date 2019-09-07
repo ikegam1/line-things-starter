@@ -14,7 +14,7 @@ const STOP = 2;
 const ROTATE = 3;
 const CATCH = 7;
 const MOVE_LEFT_MP3 = "mp3/bgm_maoudamashii_8bit29.mp3";
-const ARM_DOWN_MP3 = "";
+const ARM_DOWN_MP3 = "mp3/se_maoudamashii_effect06.mp3";
 
 // UI settings
 let clickCount = 0;
@@ -29,8 +29,10 @@ let timerRotate = -1;
 // -------------- //
 
 window.onload = () => {
-    audioElem.src = MOVE_LEFT_MP3;
-    audioElem.load();
+    audioElem1.src = MOVE_LEFT_MP3;
+    audioElem1.load();
+    audioElem2.src = ARM_DOWN_MP3;
+    audioElem2.load();
     initializeApp();
 };
 
@@ -44,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
   el_arrow.addEventListener('touchstart', function(event) {
     console.log('touchstart');
-    audioElem.play();
+    audioElem1.play();
     handlerToggle(ARROW);
     el_rotate.classList.remove('disabled');
     timerArrow = setTimeout(arrow_touch_end, 10000); //10sec
@@ -52,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
   el_arrow.addEventListener('touchend', function(event) {
     el_arrow.classList.add('disabled');
-    arrow_touch_end(){
+    arrow_touch_end();
   }, false);
 
   el_rotate.addEventListener('touchstart', function(event) {
@@ -66,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function(){
   
   function arrow_touch_end(){
     clearTimeout(timerArrow);
-    audioElem.pause();
+    audioElem1.pause();
     alert('touchend');
     handlerToggle(STOP);
     el_rotate.classList.remove('disabled');
