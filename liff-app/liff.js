@@ -20,7 +20,8 @@ const ARM_DOWN_MP3 = "mp3/se_maoudamashii_effect06.mp3";
 let clickCount = 0;
 let angleV = 0;
 let angleS = 0;
-let audioElem = new Audio();
+let audioElem1 = new Audio();
+let audioElem2 = new Audio();
 let timerArrow = -1;
 let timerRotate = -1;
 
