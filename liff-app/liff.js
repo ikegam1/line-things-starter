@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function(){
   function arrow_touch_end(){
     clearTimeout(timerArrow);
     audioElem1.pause();
-    alert('touchend');
+    //alert('touchend');
     handlerToggle(STOP);
     el_rotate.classList.remove('disabled');
     el_stop.classList.add('disabled');
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function(){
   function rotate_touch_end(){
     clearTimeout(timerRotate);
     el_rotate.classList.add('disabled');
-    alert('touchend');
+    //alert('touchend');
     handlerToggle(CATCH);
     timer = setTimeout(restart, 30000); //30sec
   }
@@ -279,11 +279,12 @@ function liffGetButtonStateCharacteristic(characteristic) {
             const val = (new Uint8Array(e.target.value.buffer))[0];
             if (val > 0) {
                 // press
-                uiToggleStateButton(true);
+                alert("receive notification : " + val);
+                //uiToggleStateButton(true);
             } else {
                 // release
-                uiToggleStateButton(false);
-                uiCountPressButton();
+                //uiToggleStateButton(false);
+                //uiCountPressButton();
             }
         });
     }).catch(error => {
