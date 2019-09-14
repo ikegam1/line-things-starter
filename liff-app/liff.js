@@ -285,7 +285,7 @@ function liffGetButtonStateCharacteristic(characteristic) {
     characteristic.startNotifications().then(() => {
         characteristic.addEventListener('characteristicvaluechanged', e => {
             const val = (new Uint8Array(e.target.value.buffer))[0];
-            val = String.fromCharCode(val);
+            val = String.fromCharCode(val) + 0;
             if (val > 0 && val < 10) {
                 // press
                 alert("receive notification : " + val);
