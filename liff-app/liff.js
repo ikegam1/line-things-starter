@@ -49,12 +49,11 @@ document.addEventListener("DOMContentLoaded", function(){
     console.log('touchstart');
     audioElem1.play();
     handlerToggle(ARROW);
-    el_rotate.classList.remove('disabled');
     timerArrow = setTimeout(arrow_touch_end, 10000); //10sec
   }, false);
 
   el_arrow.addEventListener('touchend', function(event) {
-    el_arrow.classList.add('disabled');
+    toggleBtnPrimary(el_arrow, el_rotate);
     arrow_touch_end();
   }, false);
 
@@ -64,27 +63,36 @@ document.addEventListener("DOMContentLoaded", function(){
   }, false);
 
   el_rotate.addEventListener('touchend', function(event) {
-    timerRotate = setTimeout(rotate_touch_end, 20000); //20sec
+    toggleBtnPrimary(el_rotate);
+    audioElem1.pause();
+    timerRotate = setTimeout(rotate_touch_end, 5000); //5sec
   }, false);
-  
+
+  function toggleBtnPrimary(el1, el2 = null){
+    el1.classList.add('disabled');
+    el1.classList.remove('btn-primary');
+    if(el2){
+      el2.classList.remove('disabled');
+      el2.classList.add('btn-primary');
+    }
+  }
+
   function arrow_touch_end(){
     clearTimeout(timerArrow);
-    audioElem1.pause();
-    //alert('touchend');
     handlerToggle(STOP);
     el_rotate.classList.remove('disabled');
     el_stop.classList.add('disabled');
   }
   function rotate_touch_end(){
     clearTimeout(timerRotate);
-    el_rotate.classList.add('disabled');
-    //alert('touchend');
+    audioElem2.play();
     handlerToggle(CATCH);
     timer = setTimeout(restart, 30000); //30sec
   }
  
   function restart(){
-    el_arrow.classList.remove('disabled');
+    audioElem2.pause();
+    toggleBtnPrimary(el_rotate, el_arrow);
   }
 }, false);
 
