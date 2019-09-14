@@ -293,6 +293,7 @@ function liffGetButtonStateCharacteristic(characteristic) {
             }else if (val == "$") {
                 alert("congratuation!!");
             } else {
+                alert(val);
                 // release
                 //uiToggleStateButton(false);
                 //uiCountPressButton();
