@@ -12,6 +12,7 @@ const PSDI_CHARACTERISTIC_UUID  = '26E2B12B-85F0-4F3F-9FDD-91D114270E6E';
 const ARROW = 1;
 const STOP = 2;
 const ROTATE = 3;
+const DOWN = 5;
 const CATCH = 7;
 const MOVE_LEFT_MP3 = "mp3/bgm_maoudamashii_8bit29.mp3";
 const ARM_DOWN_MP3 = "mp3/se_maoudamashii_effect06.mp3";
@@ -84,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function(){
     el_stop.classList.add('disabled');
   }
   function rotate_touch_end(){
+    handlerToggle(DOWN);
     clearTimeout(timerRotate);
     audioElem2.play();
     handlerToggle(CATCH);
