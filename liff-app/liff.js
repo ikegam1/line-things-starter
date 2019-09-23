@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function(){
     console.log('touchstart');
     audioElem1.play();
     handlerToggle(ARROW);
-    timerArrow = setTimeout(arrow_touch_end, 10000); //10sec
+    timerArrow = setTimeout(arrow_touch_end, 20000); //20sec
   }, false);
 
   el_arrow.addEventListener('touchend', function(event) {
