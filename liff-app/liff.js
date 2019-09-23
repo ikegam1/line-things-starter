@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function(){
   }, false);
 
   el_rotate.addEventListener('touchend', function(event) {
+    handlerToggle(DOWN);
     toggleBtnPrimary(el_rotate);
     audioElem1.pause();
     timerRotate = setTimeout(rotate_touch_end, 5000); //5sec
@@ -85,7 +86,6 @@ document.addEventListener("DOMContentLoaded", function(){
     el_stop.classList.add('disabled');
   }
   function rotate_touch_end(){
-    handlerToggle(DOWN);
     clearTimeout(timerRotate);
     audioElem2.play();
     handlerToggle(CATCH);
